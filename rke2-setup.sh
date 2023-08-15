@@ -67,15 +67,15 @@ fi
 
 function step3() {
 # Step 3: Create non-root user and copy SSH keys
-print_step "Step 3: Creating non-root user and copying SSH keys..."
+print_step "Step 3: Copying SSH keys to all hosts..."
 ansible-playbook set-user-ssh.yml -i inventory/$FOLDER_NAME/hosts.ini
 }
 
 function step4() {
 # Step 4: Deploy the Cluster
 print_step "Step 4: Deploying the Cluster"
-read -p "Set the user to deploy the cluster: " deploy_user
-ansible-playbook rke2-deploy.yml -i inventory/$FOLDER_NAME/hosts.ini -u $deploy_user
+#read -p "Set the user to deploy the cluster: " deploy_user
+ansible-playbook rke2-deploy.yml -i inventory/$FOLDER_NAME/hosts.ini
 }
 
 function step5() {
