@@ -44,3 +44,4 @@ echo -e "\n[all:vars]\ninstall_rke2_version = $rke2_version" >> hosts.ini
 cp hosts.ini inventory/$folder_name/
 
 export FOLDER_NAME=$folder_name
+export HOSTS=hosts.ini
