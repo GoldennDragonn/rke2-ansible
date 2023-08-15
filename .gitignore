@@ -1,0 +1,14 @@
+*.retry
+.cache/
+
+venv/
+
+test_inventory*
+
+rke2-images.linux-amd64.tar.gz
+rke2-images.linux-amd64.tar.zst
+#rke2.linux-amd64.tar.gz
+
+
+#tarball_install/*
+!tarball_install/README.md

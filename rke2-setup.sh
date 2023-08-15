@@ -1,0 +1,185 @@
+#!/bin/bash
+
+# Helper function to print with colors
+function print_with_color() {
+    local color_code="$1"
+    local message="$2"
+    echo -e "\033[${color_code}m${message}\033[0m"
+}
+
+# Improved function to print steps with yellow color
+function print_step() {
+    print_with_color "33" "----------------------------------------"
+    print_with_color "33" "$1"
+    print_with_color "33" "----------------------------------------"
+    echo ""
+}
+
+# Exit on any error
+set -e
+
+# ASCII Art Header for our Script
+echo "========================================"
+echo "        RKE2 Cluster Deployment         "
+echo "========================================"
+echo ""
+
+function step1() {
+# Step 1: Install ansible-utils collection
+print_step "Step 1: Installing ansible-utils collection and updating packages..."
+output=$(ansible-galaxy collection install ansible-utils-2.10.3.tar.gz 2>&1)
+
+if [[ "$output" == *"was installed successfully"* ]] || [[ "$output" == *"Nothing to do. All requested collections are already installed."* ]]; then
+    echo -e "\033[0;32mColletion successfully installed\033[0m"
+fi
+
+apt_output=$(sudo apt update 2>&1)
+
+    if [[ "$apt_output" == *"All packages are up to date"* ]]; then
+        echo -e "\033[0;32mAll packages are up to date\033[0m"
+    else
+        echo -e "$apt_output"
+    fi
+}
+
+function step2() {
+# Step 2: Generate Inventory
+print_step "Step 2: Generating inventory..."
+. rke2-hostsini-set.sh
+echo -e "\033[0;32mInventory for cluster $FOLDER_NAME generated successfully.\033[0m"}
+
+# Prompt user to review configuration files
+print_step "Please Review Configuration Files"
+echo -e "\033[1;37mGo to /inventory/$FOLDER_NAME/group_vars\033[0m"
+echo -e "\033[1;37mReview and modify rke2_server and rke2_agents config files if needed.\033[0m"
+read -p "Enter 'yes' to continue deployment or 'quit' to stop: " user_input
+
+# Check user's input and act accordingly
+if [[ $user_input == "quit" ]]; then
+    echo "Stopped script deployment.."
+    exit 0
+elif [[ $user_input != "yes" ]]; then
+    echo "Invalid input. Exiting script."
+    exit 1
+fi
+
+}
+
+function step3() {
+# Step 3: Create non-root user and copy SSH keys
+print_step "Step 3: Creating non-root user and copying SSH keys..."
+ansible-playbook set-user-ssh.yml -i inventory/$FOLDER_NAME/hosts.ini
+}
+
+function step4() {
+# Step 4: Deploy the Cluster
+print_step "Step 4: Deploying the Cluster"
+read -p "Set the user to deploy the cluster: " deploy_user
+ansible-playbook rke2-deploy.yml -i inventory/$FOLDER_NAME/hosts.ini -u $deploy_user
+}
+
+function step5() {
+# Step 5: Fetch and Setup kubeconfig
+print_step "Step 5: Setting up kubeconfig from the first master node"
+read -p "Enter the IP of the first master node: " master_ip
+ssh $deploy_user@$master_ip "sudo cat /etc/rancher/rke2/rke2.yaml" | sed "s/127.0.0.1/$master_ip/g" > temp_rke2.yaml
+
+# Merge the fetched configuration with the existing ~/.kube/config
+echo "Merging the fetched configuration with ~/.kube/config..."
+KUBECONFIG=~/.kube/config:temp_rke2.yaml kubectl config view --flatten > /tmp/config
+
+# Replace the old config with the new merged config
+mv /tmp/config ~/.kube/config
+
+#Set ~/.kube/config permissions
+chmod go-r ~/.kube/config 
+
+# Remove the temporary rke2.yaml
+rm temp_rke2.yaml
+
+
+# Switch to the new context
+kubectl config use-context default
+
+# Verifying the cluster setup
+print_step "Verifying Cluster Setup"
+
+# First, check if we can connect to the cluster and authenticate
+if kubectl get nodes &> /dev/null; then
+    # Check if any node is NOT in the "Ready" state
+    if kubectl get nodes --no-headers | grep -vq "Ready"; then
+        print_with_color "31" "Warning: One or more nodes are not in the Ready state."
+    else
+        print_with_color "32" "Your RKE2 cluster is now up and running."
+    fi
+else
+    print_with_color "31" "Error: Unable to connect to the cluster or authenticate."
+fi
+
+}
+
+# Prompt for new deployment or continuation
+print_with_color "1;37" "Is this a new deployment or continue from a previous run?"
+read -p "(Enter 1 for new, 2 for continue): " deployment_choice
+# read -p "Is this a new deployment or continue from a previous run? (Enter 1 for new, 2 for continue): " deployment_choice
+
+if [[ $deployment_choice -eq 1 ]]; then
+    # New deployment, execute all steps in sequence
+    step1
+    step2
+    step3
+    step4
+    step5
+elif [[ $deployment_choice -eq 2 ]]; then
+    # Continuation, ask the user from which step to start
+    # read -p "Choose the step to start from (1-5): " start_step
+    print_with_color "1;37" "Choose the step to start from:"
+    echo "1. Installing ansible-utils collection"
+    echo "2. Generating inventory"
+    echo "3. Creating non-root user and copying SSH keys"
+    echo "4. Deploying the Cluster"
+    echo "5. Setting up kubeconfig from the first master node"
+    read -p "(1-5): " start_step
+    case $start_step in
+        1)
+            echo "Starting from Step 1: Installing ansible-utils collection..."
+            step1
+            step2
+            step3
+            step4
+            step5
+            ;;
+        2)
+            echo "Starting from Step 2: Generating inventory..."
+            step2
+            step3
+            step4
+            step5
+            ;;
+        3)
+            echo "Starting from Step 3: Creating non-root user and copying SSH keys..."
+            step3
+            step4
+            step5
+            ;;
+        4)
+            echo "Starting from Step 4: Deploying the Cluster"
+            step4
+            step5
+            ;;
+        5)
+            echo "Starting from Step 5: Setting up kubeconfig from the first master node"
+            step5
+            ;;
+        *)
+            echo "Invalid step choice. Exiting."
+            exit 1
+            ;;
+    esac
+else
+    echo "Invalid deployment choice. Exiting."
+    exit 1
+fi
+
+# Completion Message
+print_step "Script Completed! Thank you for using RKE2 Cluster Deployment."

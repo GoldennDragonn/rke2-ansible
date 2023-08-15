@@ -1,0 +1,21 @@
+---
+- name: Use ssh-copy-id for all hosts
+  hosts: all
+  gather_facts: no
+
+  vars_prompt:
+    - name: "ssh_user"
+      prompt: "Enter the SSH username"
+      private: no
+
+    - name: "ssh_password"
+      prompt: "Enter the SSH password"
+      private: yes
+
+  tasks:
+    - name: Copy SSH key using ssh-copy-id
+      command: ssh-copy-id {{ ssh_user }}@{{ inventory_hostname }}
+      delegate_to: localhost
+      ignore_errors: yes
+      vars:
+        ansible_ssh_pass: "{{ ssh_password }}"

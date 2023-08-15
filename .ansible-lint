@@ -1,0 +1,10 @@
+exclude_paths:
+- .github/
+- molecule/
+- .ansible-lint
+warn_list:
+  - no-handler
+  - var-spacing
+skip_list:
+  - experimental
+  - fqcn-builtins
