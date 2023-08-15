@@ -1,0 +1,11 @@
+#user from which the ansible roles are running from
+# deployer_user: "{{lookup 'pipe', 'whoami'}}"
+# deployer_dir: "{{lookup('env','HOME')}}"
+
+#host from which the ansible roles are running from
+# deployer_host: "{{ ansible_play_host[0]}}"
+# date: "{{lookup('pipe','date+%y_%m_%d')}}"
+
+ansible_ssh_pass: "beder"
+ansible_sudo_pass: "beder"
+ansible_user: "beder"
