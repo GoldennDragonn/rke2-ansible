@@ -88,18 +88,27 @@ read -p "Enter the IP of the main master node: " MASTER_IP
 
 ssh -t $ANSIBLE_USER@$MASTER_IP "sudo cat /etc/rancher/rke2/rke2.yaml" | sed "s/127.0.0.1/$MASTER_IP/g" > temp_rke2.yaml
 
-# Merge the fetched configuration with the existing ~/.kube/config
+mv temp_rke2.yaml ~/.kube/config_rke2
+
+cp ~/.kube/config ~/.kube/config-backup
+
+# # Merge the fetched configuration with the existing ~/.kube/config
 echo "Merging the fetched configuration with ~/.kube/config..."
-KUBECONFIG=~/.kube/config:temp_rke2.yaml kubectl config view --flatten > /tmp/config
+# KUBECONFIG=~/.kube/config:config_rke2 kubectl config view --flatten > /tmp/config
 
-# Replace the old config with the new merged config
-mv /tmp/config ~/.kube/config
+export KUBECONFIG=~/.kube/config:config_rke2
 
-#Set ~/.kube/config permissions
+kubectl config view --flatten > all-in-one-kubeconfig.yaml
+
+# # Replace the old config with the new merged config
+mv all-in-one-kubeconfig.yaml ~/.kube/config
+
+# #Set ~/.kube/config permissions
 chmod go-r ~/.kube/config 
 
+
 # Remove the temporary rke2.yaml
-rm temp_rke2.yaml
+#rm temp_rke2.yaml
 
 
 # Switch to the new context

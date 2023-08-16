@@ -19,7 +19,7 @@ This script automates the deployment of an RKE2 Kubernetes cluster. By running t
   - **RAM**: 4GB minimum (8GB recommended)
   - **CPU**: 2 cores minimum (4 cores recommended)
 - **Image Prerequisites**:
-  1. Set up a private registry and configure it in `/extraconfigs/manifest/registries.yaml`.
+  1. Set up a private registry and configure it in `/extraconfigs/registries.yaml`.
   2. Upload the following image tarballs to the `/tarball_install` folder (create if doesn't exists):
      - `rke2-images.linux-amd64.tar.gz`
      - `rke2-images.linux-amg64.tar.zst`
