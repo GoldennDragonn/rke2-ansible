@@ -12,6 +12,7 @@ This script automates the deployment of an RKE2 Kubernetes cluster. By running t
 ## Prerequisites
 - **Bash** must be installed and configured on your system.
 - **Ansible version 2.12 and higher** must be installed and configured on your system.
+- ** `yb-cluster` is a mandatory folder. Do not delete!
 - The script assumes that you have necessary permissions to execute and make changes on the system.
 - Make sure to backup any important data or configurations before proceeding.
 - Prepared Virtual Machines (VMs) with either Linux or Windows operating systems.
