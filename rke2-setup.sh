@@ -138,8 +138,7 @@ function step6() {
 
 # Prompt for new deployment or continuation
 print_with_color "1;37" "Is this a new deployment or continue from a previous run?"
-read -p "(Enter 1 for new, 2 for continue): " deployment_choice
-# read -p "Is this a new deployment or continue from a previous run? (Enter 1 for new, 2 for continue): " deployment_choice
+read -p "(Enter 1 for new, 2 for continue, 3 for uninstall): " deployment_choice
 
 if [[ $deployment_choice -eq 1 ]]; then
     # New deployment, execute all steps in sequence
