@@ -38,7 +38,7 @@ An inventory will be generated which is crucial for Ansible playbooks. Ensure th
 ### Step 3: Reviewing Configuration Files
 Before proceeding further, it's essential to review the configuration files. Ensure they align with your desired cluster setup.
 
-### Step 4: Creating non-root user and copying SSH keys
+### Step 4: Copying SSH keys
 For security reasons, the script will create a non-root user on the target nodes and copy the SSH keys. This allows for secure communication between nodes.
 
 ### Step 5: Deploying the Cluster

@@ -80,9 +80,13 @@ ansible-playbook rke2-deploy.yml -i inventory/$FOLDER_NAME/hosts.ini
 
 function step5() {
 # Step 5: Fetch and Setup kubeconfig
-print_step "Step 5: Setting up kubeconfig from the first master node"
-read -p "Enter the IP of the first master node: " master_ip
-ssh $deploy_user@$master_ip "sudo cat /etc/rancher/rke2/rke2.yaml" | sed "s/127.0.0.1/$master_ip/g" > temp_rke2.yaml
+# Step 5: Fetch and Setup kubeconfig
+print_step "Step 5: Setting up kubeconfig from the main master node"
+
+read -p "Enter the Ansible user: " ANSIBLE_USER
+read -p "Enter the IP of the main master node: " MASTER_IP
+
+ssh -t $ANSIBLE_USER@$MASTER_IP "sudo cat /etc/rancher/rke2/rke2.yaml" | sed "s/127.0.0.1/$MASTER_IP/g" > temp_rke2.yaml
 
 # Merge the fetched configuration with the existing ~/.kube/config
 echo "Merging the fetched configuration with ~/.kube/config..."
@@ -118,6 +122,20 @@ fi
 
 }
 
+function step6() {
+    print_step "Step 6: Uninstalling the Cluster"
+
+    # Prompt for necessary details
+    read -p "Enter the sudo user: " ANSIBLE_USER
+    read -sp "Enter the sudo password: " ANSIBLE_PASSWORD
+    echo  # Add a newline for cleaner output after the hidden password prompt
+    read -p "Enter the cluster inventory folder name: " FOLDER_NAME
+
+    # Run the uninstall command on all nodes in the inventory
+    ansible all -i inventory/$FOLDER_NAME/hosts.ini -u $ANSIBLE_USER --become --ask-become-pass -m shell -a "/usr/local/bin/rke2-uninstall.sh"
+}
+
+
 # Prompt for new deployment or continuation
 print_with_color "1;37" "Is this a new deployment or continue from a previous run?"
 read -p "(Enter 1 for new, 2 for continue): " deployment_choice
@@ -136,7 +154,7 @@ elif [[ $deployment_choice -eq 2 ]]; then
     print_with_color "1;37" "Choose the step to start from:"
     echo "1. Installing ansible-utils collection"
     echo "2. Generating inventory"
-    echo "3. Creating non-root user and copying SSH keys"
+    echo "3. Copying SSH keys for sudo privileged user"
     echo "4. Deploying the Cluster"
     echo "5. Setting up kubeconfig from the first master node"
     read -p "(1-5): " start_step
@@ -176,6 +194,9 @@ elif [[ $deployment_choice -eq 2 ]]; then
             exit 1
             ;;
     esac
+elif [[ $deployment_choice -eq 3 ]]; then
+    # Uninstalling the cluster
+    step6
 else
     echo "Invalid deployment choice. Exiting."
     exit 1
