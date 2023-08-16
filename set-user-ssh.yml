@@ -4,8 +4,21 @@
   gather_facts: no
 
   tasks:
+    - name: Check if sshpass is installed
+      command: which sshpass
+      register: sshpass_check
+      failed_when: false
+      changed_when: false
+      delegate_to: localhost
+
+    - name: Install sshpass
+      apt:
+        name: sshpass
+        state: present
+      when: sshpass_check.rc != 0
+      delegate_to: localhost
+
     - name: Copy SSH key using ssh-copy-id
-      command: ssh-copy-id {{ ansible_user }}@{{ inventory_hostname }}
+      command: sshpass -p '{{ ansible_ssh_pass }}' ssh-copy-id {{ ansible_user }}@{{ inventory_hostname }}
       delegate_to: localhost
       ignore_errors: yes
-  
