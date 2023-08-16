@@ -43,7 +43,7 @@ audit_policy_config_file_path: "{{ playbook_dir }}/extraconfigs/audit-policy.yam
 
 # See https://docs.rke2.io/install/containerd_registry_configuration/
 # Add a registry configuration file by specifying the file path on the control host
-# registry_config_file_path: "{{ playbook_dir }}/extraconfigs/registries.yaml"
+registry_config_file_path: "{{ playbook_dir }}/extraconfigs/registries.yaml"
 
 # See https://docs.rke2.io/helm/#automatically-deploying-manifests-and-helm-charts
 # Add manifest files by specifying the directory path on the control host
