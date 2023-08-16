@@ -3,7 +3,6 @@
   hosts: rke2_servers
   any_errors_fatal: true
   become: true
-  become_user: "{{ ansible_user }}"
   become_method: sudo
   vars:
     ansible_become_pass: "{{ ansible_sudo_pass }}"
@@ -15,7 +14,6 @@
   hosts: rke2_agents
   any_errors_fatal: true
   become: true
-  become_user: "{{ ansible_user }}"
   become_method: sudo
   vars:
     ansible_become_pass: "{{ ansible_sudo_pass }}"
