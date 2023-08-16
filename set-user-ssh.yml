@@ -8,5 +8,4 @@
       command: ssh-copy-id {{ ansible_user }}@{{ inventory_hostname }}
       delegate_to: localhost
       ignore_errors: yes
-      vars:
-        ansible_ssh_pass: "{{ ansible_ssh_pass }}"
+  
