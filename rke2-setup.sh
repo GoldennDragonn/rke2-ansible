@@ -96,7 +96,7 @@ cp ~/.kube/config ~/.kube/config-backup
 echo "Merging the fetched configuration with ~/.kube/config..."
 # KUBECONFIG=~/.kube/config:config_rke2 kubectl config view --flatten > /tmp/config
 
-export KUBECONFIG=~/.kube/config:config_rke2
+export KUBECONFIG=~/.kube/config:~/.kube/config_rke2
 
 kubectl config view --flatten > all-in-one-kubeconfig.yaml
 

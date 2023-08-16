@@ -19,6 +19,8 @@
       delegate_to: localhost
 
     - name: Copy SSH key using ssh-copy-id
-      command: sshpass -p '{{ ansible_ssh_pass }}' ssh-copy-id {{ ansible_user }}@{{ inventory_hostname }}
+      command: 
+        cmd: sshpass -p '{{ ansible_ssh_pass }}' ssh-copy-id -o StrictHostKeyChecking=no {{ ansible_user }}@{{ inventory_hostname }}
       delegate_to: localhost
       ignore_errors: yes
+
