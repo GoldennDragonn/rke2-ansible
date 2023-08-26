@@ -26,8 +26,8 @@ This script automates the deployment of an RKE2 Kubernetes cluster. By running t
      - `sha256sum-amd64.txt`
   3. Upload `rke2.linux-amd64.tar.gz` to the `/tarball_install` (create if doesn't exists)
   4. Manually setting up Inventory: 
-   4.1. Navigate to /inventory folder and copy `yb_cluster` folder with your cluster name
-   4.2  Set up users and password in /inventory/(your_cluster_name)/group_vars/all.yml
+   - 4.1. Navigate to /inventory folder and copy `yb_cluster` folder with your cluster name
+   - 4.2  Set up users and password in /inventory/(your_cluster_name)/group_vars/all.yml
 ## Steps to Deploy RKE2 Cluster
 
 ### Step 1: Installing ansible-utils collection
