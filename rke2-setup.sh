@@ -67,14 +67,12 @@ fi
 
 function step3() {
 # Step 3: Create non-root user and copy SSH keys
-local FOLDER_NAME="$1"
 print_step "Step 3: Copying SSH keys to all hosts..."
 ansible-playbook set-user-ssh.yml -i inventory/$FOLDER_NAME/hosts.ini
 }
 
 function step4() {
 # Step 4: Deploy the Cluster
-local FOLDER_NAME="$1"
 print_step "Step 4: Deploying the Cluster"
 #read -p "Set the user to deploy the cluster: " deploy_user
 ansible-playbook rke2-deploy.yml -i inventory/$FOLDER_NAME/hosts.ini
@@ -187,7 +185,7 @@ elif [[ $deployment_choice -eq 2 ]]; then
             ;;
         3)
             echo "Starting from Step 3: Creating non-root user and copying SSH keys..."
-            print_with_color "97" "Enter the cluster inventory folder name: "
+            print_with_color "1;37" "Enter the cluster inventory folder name: "
             read FOLDER_NAME
             step3 "$FOLDER_NAME"
             step4 "$FOLDER_NAME"
@@ -195,7 +193,7 @@ elif [[ $deployment_choice -eq 2 ]]; then
             ;;
         4)
             echo "Starting from Step 4: Deploying the Cluster"
-            print_with_color "97" "Enter the cluster inventory folder name: "
+            print_with_color "1;37" "Enter the cluster inventory folder name: "
             read FOLDER_NAME
             step4 "$FOLDER_NAME"
             step5
