@@ -85,8 +85,9 @@ print_step "Step 5: Setting up kubeconfig from the main master node"
 
 read -p "Enter the Ansible user: " ANSIBLE_USER
 read -p "Enter the IP of the main master node: " MASTER_IP
+read -s -p "Enter the SSH password: " SSH_PASS
 
-ssh -t $ANSIBLE_USER@$MASTER_IP "sudo cat /etc/rancher/rke2/rke2.yaml" | sed "s/127.0.0.1/$MASTER_IP/g" > temp_rke2.yaml
+sshpass -p "$SSH_PASS" ssh $ANSIBLE_USER@$MASTER_IP "sudo -S cat /etc/rancher/rke2/rke2.yaml" | sed "s/127.0.0.1/$MASTER_IP/g" > temp_rke2.yaml
 
 mv temp_rke2.yaml ~/.kube/config_rke2
 
