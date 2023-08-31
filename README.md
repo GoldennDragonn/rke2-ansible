@@ -12,7 +12,7 @@ This script automates the deployment of an RKE2 Kubernetes cluster. By running t
 ## Prerequisites
 - **Bash** must be installed and configured on your system.
 - **Ansible version 2.12 and higher** must be installed and configured on your system.
-- ** `yb-cluster` is a mandatory folder. Do not delete!
+- ** `yb-cluster` ** is a mandatory folder. Do not delete!
 - The script assumes that you have necessary permissions to execute and make changes on the system.
 - Make sure to backup any important data or configurations before proceeding.
 - Prepared Virtual Machines (VMs) with either Linux or Windows operating systems.
@@ -28,6 +28,7 @@ This script automates the deployment of an RKE2 Kubernetes cluster. By running t
   4. Manually setting up Inventory: 
    - 4.1. Navigate to /inventory folder and copy `yb_cluster` folder with your cluster name
    - 4.2  Set up users and password in /inventory/(your_cluster_name)/group_vars/all.yml
+   - 4.3  Set up the IP's of your servers in hosts.ini of your cluster folder. 
 ## Steps to Deploy RKE2 Cluster
 
 ### Step 1: Installing ansible-utils collection
