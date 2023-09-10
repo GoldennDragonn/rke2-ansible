@@ -13,13 +13,6 @@
     - role: ntp-client
     - role: disable-swap
 
-- name: Provision gpu on gpu nodes only
-  hosts: gpu_nodes
-  become: yes
-  roles:
-   - role: nvidia-driver
-
-
 - name: Server play
   hosts: rke2_servers
   any_errors_fatal: true
@@ -35,9 +28,3 @@
   roles:
     - role: rke2_agent
   serial: 3
-
-# - name: Install Nvidia GPU Operator in the Cluster
-#   hosts: gpu_nodes
-#   become: yes
-#   roles:
-#    - role: nvidia-gpu-operator
