@@ -1,0 +1,5 @@
+###################### Focal - 20.04 ######################
+deb http://dvdl18rep/ub20 focal main restricted universe multiverse
+deb http://dvdl18rep/ub20 focal-updates main restricted universe multiverse
+deb http://dvdl18rep/ub20 focal-security main restricted universe multiverse
+deb http://dvdl18rep/ub20 focal-backports main restricted universe multiverse

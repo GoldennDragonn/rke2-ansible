@@ -1,0 +1,20 @@
+---
+- name: ssh-keyscan
+  vars:
+    - ssh_known_hosts: "{{ groups['all'] }}"
+    - ssh_known_hosts_file: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
+  shell: "ssh-keyscan {{ item }} >> {{ ssh_known_hosts_file }}"
+  with_items:
+    - "{{ ssh_known_hosts }}"
+
+- name: Install sshpass
+  connection: local
+  become: yes
+  ansible.builtin.apt: name=sshpass
+
+- name: ssh-copy-id
+  vars:
+    - ssh_known_hosts: "{{ groups['all'] }}"
+  shell: "sshpass -p {{ ansible_ssh_pass }} ssh-copy-id -i {{ lookup('env','HOME') + '/.ssh/id_rsa.pub' }} -o StrictHostKeyChecking=no {{ ansible_user }}@{{ item }}"
+  with_items:
+    - "{{ ssh_known_hosts }}"

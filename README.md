@@ -10,9 +10,10 @@
 This script automates the deployment of an RKE2 Kubernetes cluster. By running the script, you'll be able to set up the cluster with minimal manual intervention.
 
 ## Prerequisites
+- **sshpass** installed ( In case it is not installed, it will be installed during the script execution process) 
 - **Bash** must be installed and configured on your system.
 - **Ansible version 2.12 and higher** must be installed and configured on your system.
-- ** `yb-cluster` ** is a mandatory folder. Do not delete!
+- **`yb-cluster`** is a mandatory folder. Do not delete!
 - The script assumes that you have necessary permissions to execute and make changes on the system.
 - Make sure to backup any important data or configurations before proceeding.
 - Prepared Virtual Machines (VMs) with either Linux or Windows operating systems.
@@ -28,7 +29,7 @@ This script automates the deployment of an RKE2 Kubernetes cluster. By running t
   4. Manually setting up Inventory: 
    - 4.1. Navigate to /inventory folder and copy `yb_cluster` folder with your cluster name
    - 4.2  Set up users and password in /inventory/(your_cluster_name)/group_vars/all.yml
-   - 4.3  Set up the IP's of your servers in hosts.ini of your cluster folder. 
+   - 4.3
 ## Steps to Deploy RKE2 Cluster
 
 ### Step 1: Installing ansible-utils collection
@@ -37,19 +38,19 @@ The script will automatically install the `ansible-utils` collection. This is es
 ### Step 2: Generating inventory
 An inventory will be generated which is crucial for Ansible playbooks. Ensure that the generated inventory matches your infrastructure requirements.
 
-### Step 3: Reviewing Configuration Files
+### Step 2.5: Reviewing Configuration Files
 Before proceeding further, it's essential to review the configuration files. Ensure they align with your desired cluster setup.
 
-### Step 4: Copying SSH keys
-For security reasons, the script will create a non-root user on the target nodes and copy the SSH keys. This allows for secure communication between nodes.
+### Step 3: Copying SSH keys
+For security reasons, the ansible will copy the SSH keys from localhost to all the target nodes. This allows for secure communication between nodes.
 
-### Step 5: Deploying the Cluster
+### Step 4: Deploying the Cluster
 The main deployment step – the RKE2 cluster will be set up during this phase.
 
-### Step 6: Setting up kubeconfig from the first master node
+### Step 5: Setting up kubeconfig from the first master node
 To manage the Kubernetes cluster, `kubeconfig` will be set up from the first master node. This ensures you have the necessary credentials and context to manage the deployed cluster.
 
-### Step 7: Verifying Cluster Setup
+### Step 6: Verifying Cluster Setup
 The script will run some checks to verify that the cluster has been set up correctly.
 
 ### Completion

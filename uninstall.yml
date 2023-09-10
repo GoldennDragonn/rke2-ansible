@@ -1,0 +1,7 @@
+---
+- name: Uninstall RKE2 Cluster 
+  hosts: all
+  become: yes
+  tasks:
+    - name: RUN RKE2 uninstall script
+      command: /usr/local/bin/rke2-uninstall.sh
