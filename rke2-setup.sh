@@ -160,6 +160,7 @@ elif [[ $deployment_choice -eq 2 ]]; then
             print_with_color "1;37" "Enter the name of your cluster inventory folder:"
             read FOLDER_NAME
             step3 "$FOLDER_NAME"
+            step4
             ;;
         4)
             echo "Starting from Step 4: Setting up kubeconfig from the first master node"
