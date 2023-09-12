@@ -1,0 +1,24 @@
+---
+- name: Installing chrony   
+  apt:
+    name: chrony
+    state: present
+    update_cache: yes
+    force: yes
+
+- name: Copy chrony.conf 
+  copy:
+    src: "{{ item }}"
+    dest: /etc/chrony/
+    owner: root
+    group: root
+    mode: '0655'
+  with_items:
+    - chrony.conf
+
+- name: restart chrony client and reload
+  systemd:
+    name: chrony
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

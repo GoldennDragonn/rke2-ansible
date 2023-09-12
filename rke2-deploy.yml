@@ -1,11 +1,21 @@
 ---
+- name: Copy ssh-key from localhost to all hosts
+  hosts: localhost
+  roles:
+    - role: ssh-copy-id
+
+- name: Installing prerequisites on all hosts
+  hosts: all
+  become: yes
+  roles:
+    # - role: apt-packages
+    - role: ntp-client
+    - role: disable-swap
+
 - name: Server play
   hosts: rke2_servers
   any_errors_fatal: true
-  become: true
-  become_method: sudo
-  vars:
-    ansible_become_pass: "{{ ansible_sudo_pass }}"
+  become: yes
   roles:
     - role: rke2_server
   serial: 1
@@ -13,10 +23,7 @@
 - name: Agent play
   hosts: rke2_agents
   any_errors_fatal: true
-  become: true
-  become_method: sudo
-  vars:
-    ansible_become_pass: "{{ ansible_sudo_pass }}"
+  become: yes
   roles:
     - role: rke2_agent
   serial: 3

@@ -34,7 +34,7 @@ rke2_config:
 #  #- "ETCD_AUTO_TLS=false"
 #  #- "ETCD_PEER_AUTO_TLS=false"
 #
- write-kubeconfig-mode: "0640"
+ write-kubeconfig-mode: "0644"
 
 
 # See https://kubernetes.io/docs/tasks/debug-application-cluster/audit/

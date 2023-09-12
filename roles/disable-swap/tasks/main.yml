@@ -1,0 +1,63 @@
+---
+# The recommendation of kubernetes is to disable swap and add some sysctl values
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  shell: |
+    swapoff -a
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+.*)$'
+    replace: '# \1'
+
+- name: Check if net.bridge.bridge-nf-call-iptables exists
+  shell: sysctl -n net.bridge.bridge-nf-call-iptables
+  failed_when:
+    - bridge_nf.rc != 0
+    - bridge_nf.rc != 255
+    - " 'unknown key' not in bridge_nf.stderr"
+  register: bridge_nf
+  changed_when: false
+
+- name: Set net.bridge.bridge-nf-call-iptables
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: '1'
+    state: present
+    reload: yes
+  when: bridge_nf.rc == 0 
+
+- name: Check if net.bridge.bridge-nf-call-ip6tables exists
+  shell: sysctl -n net.bridge.bridge-nf-call-ip6tables
+  failed_when:
+    - bridge_nf6.rc != 0
+    - bridge_nf6.rc != 255
+    - " 'unknown key' not in bridge_nf6.stderr"
+  register: bridge_nf6
+  changed_when: false
+
+- name: Set net.bridge.bridge-nf-call-ip6tables
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: '1'
+    state: present
+    reload: yes
+  when: bridge_nf6.rc == 0 
+
+
+- name: Check if net.net.ipv4.ip_forward exists
+  shell: sysctl -n net.ipv4.ip_forward
+  failed_when:
+    - ip_forward.rc != 0
+    - ip_forward.rc != 255
+    - " 'unknown key' not in ip_forward.stderr"
+  register: ip_forward
+  changed_when: false
+
+- name: Set net.ipv4.ip_forward
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    state: present
+    reload: yes
+  when: ip_forward.rc == 0 

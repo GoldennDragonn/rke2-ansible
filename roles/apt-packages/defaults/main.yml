@@ -1,0 +1,6 @@
+---
+# example: (a list of packages names and state, the list may be provided as vars from the calling playbook)
+# apt_packages:
+#  - name: unattended-upgrades
+#    state: absent
+
