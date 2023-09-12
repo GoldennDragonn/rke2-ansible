@@ -1,8 +1,0 @@
-###################### Jammy - 22.04 ######################
-deb http://dvdl18rep/ub22 jammy main restricted
-deb http://dvdl18rep/ub22 jammy-updates main restricted
-deb http://dvdl18rep/ub22 jammy universe
-deb http://dvdl18rep/ub22 jammy-updates universe
-deb http://dvdl18rep/ub22 jammy multiverse
-deb http://dvdl18rep/ub22 jammy-updates multiverse
-deb http://dvdl18rep/ub22 jammy-backports main restricted universe multiverse

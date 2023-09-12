@@ -1,9 +1,0 @@
-###################### Bionic - 18.04 ######################
-deb http://dvdl18rep/ub18 bionic main restricted
-deb http://dvdl18rep/ub18 bionic-updates main restricted
-deb http://dvdl18rep/ub18 bionic universe
-deb http://dvdl18rep/ub18 bionic-updates universe
-deb http://dvdl18rep/ub18 bionic multiverse
-deb http://dvdl18rep/ub18 bionic-updates multiverse
-deb http://dvdl18rep/ub18 bionic-backports main restricted universe multiverse
-

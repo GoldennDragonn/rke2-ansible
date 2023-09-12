@@ -1,4 +1,8 @@
 ---
+- name: Capture kernel version
+  set_fact:
+    KERNEL_VERSION: "{{ ansible_kernel }}"
+
 - name: verifying apt-packages state
   apt:
     name: "{{ item.name }}"

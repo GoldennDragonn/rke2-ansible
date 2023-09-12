@@ -13,12 +13,11 @@ apt_packages:
     state: present
   - name: unattended-upgrades
     state: absent
-  - name: linux-headers-5.15.0-60-generic
+  - name: "linux-headers-{{ KERNEL_VERSION }}"
     state: present
-  - name: linux-image-5.15.0-60-generic
+  - name: "linux-image-{{ KERNEL_VERSION }}"
     state: present
-  - name: linux-modules-5.15.0-60-generic
-    state: present
+  - name: "linux-modules-{{ KERNEL_VERSION }}"
 
 rke2_download_kubeconf_path: ~/.kube
 rke2_download_kubeconf_file_name: rke2.yaml

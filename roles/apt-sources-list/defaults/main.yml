@@ -1,5 +1,0 @@
----
-# defaults file for sources-list
-ubuntu_18_04_sources_list: "ubuntu-18.04-sources.list"
-ubuntu_20_04_sources_list: "ubuntu-20.04-sources.list"
-ubuntu_22_04_sources_list: "ubuntu-22.04-sources.list"
