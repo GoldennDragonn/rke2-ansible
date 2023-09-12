@@ -2,4 +2,4 @@ ansible_ssh_pass: "password"
 ansible_sudo_pass: "password"
 ansible_user: "username"
 
-rke_channle: stable
+rke_channel: stable
