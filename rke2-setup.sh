@@ -62,8 +62,18 @@ echo -e "\033[0;32mInventory for cluster $FOLDER_NAME set up successfully.\033[0
 
 # Prompt user to review configuration files
 print_step "Please Review Configuration Files"
-echo -e "\033[1;37mGo to /inventory/$FOLDER_NAME/group_vars\033[0m"
-echo -e "\033[1;37mReview and modify rke2_server and rke2_agents config files if needed.\033[0m"
+for file in inventory/$FOLDER_NAME/group_vars/all.yml inventory/$FOLDER_NAME/group_vars/rke2_servers.yml inventory/$FOLDER_NAME/group_vars/rke2_agents.yml; do
+    echo -e "\033[1;33m===== $file =====\033[0m"  
+    if [[ -f $file ]]; then
+        grep -v '^[[:space:]]*#' $file | sed '/^$/N;/^\n$/D'  
+    else
+        echo "File not found: $file"
+    fi
+    echo ""
+done
+
+# echo -e "\033[1;37mGo to /inventory/$FOLDER_NAME/group_vars\033[0m"
+echo -e "\033[1;37mReview and modify rke2_servers, rke2_agents and all.yml config files if needed.\033[0m"
 read -p "Enter 'yes' to continue deployment or 'quit' to stop: " user_input
 
 # Check user's input and act accordingly
