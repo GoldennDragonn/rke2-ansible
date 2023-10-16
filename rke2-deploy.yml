@@ -6,7 +6,7 @@
 
 - name: Installing prerequisites on all hosts
   hosts: all
-  become: yes
+  become: true
   roles:
     - role: apt-packages
     - role: ntp-client
@@ -15,7 +15,7 @@
 - name: Server play
   hosts: rke2_servers
   any_errors_fatal: true
-  become: yes
+  become: true
   roles:
     - role: rke2_server
   serial: 1
@@ -23,7 +23,7 @@
 - name: Agent play
   hosts: rke2_agents
   any_errors_fatal: true
-  become: yes
+  become: true
   roles:
     - role: rke2_agent
   serial: 3
