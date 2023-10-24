@@ -25,7 +25,7 @@ echo "========================================"
 echo ""
 
 function step1() {
-# Step 1: Install ansible-utils collection
+# Step 1: Installing Ansible Collections
 print_step "Step 1: Installing Ansible Collections and updating packages..."
 output1=$(ansible-galaxy collection install ansible-utils-2.10.3.tar.gz 2>&1)
 
@@ -72,7 +72,6 @@ for file in inventory/$FOLDER_NAME/group_vars/all.yml inventory/$FOLDER_NAME/gro
     echo ""
 done
 
-# echo -e "\033[1;37mGo to /inventory/$FOLDER_NAME/group_vars\033[0m"
 echo -e "\033[1;37mReview and modify rke2_servers, rke2_agents and all.yml config files if needed.\033[0m"
 read -p "Enter 'yes' to continue deployment or 'quit' to stop: " user_input
 
@@ -90,7 +89,6 @@ fi
 function step3() {
 # Step 3: Deploy the Cluster
 print_step "Step 3: Deploying the Cluster"
-#read -p "Set the user to deploy the cluster: " deploy_user
 ansible-playbook rke2-deploy.yml -i inventory/$FOLDER_NAME/hosts.ini
 }
 
@@ -105,11 +103,6 @@ ansible-playbook summary.yml -i inventory/$FOLDER_NAME/hosts.ini
 
 function step5() {
     print_step "Uninstalling the Cluster"
-
-    # # Prompt for necessary details
-    # read -p "Enter the sudo user: " ANSIBLE_USER
-    # read -sp "Enter the sudo password: " ANSIBLE_PASSWORD
-    # echo  # Add a newline for cleaner output after the hidden password prompt
 
     #Prompt the user for folder name
     read -p "Enter the cluster inventory folder name: " FOLDER_NAME
@@ -126,8 +119,6 @@ function step5() {
         exit 0
     fi 
 
-    # Run the uninstall command on all nodes in the inventory
-    # ansible all -i inventory/$FOLDER_NAME/hosts.ini -u $ANSIBLE_USER --become --ask-become-pass -m shell -a "/usr/local/bin/rke2-uninstall.sh"
 
 }
 
@@ -146,21 +137,21 @@ elif [[ $deployment_choice -eq 2 ]]; then
     # Continuation, ask the user from which step to start
     # read -p "Choose the step to start from (1-4): " start_step
     print_with_color "1;37" "Choose the step to start from:"
-    echo "1. Installing Ansible Collection"
+    echo "1. Installing Ansible Collections"
     echo "2. Generating inventory"
     echo "3. Deploying the Cluster"
     echo "4. Setting up kubeconfig from the Master node to Localhost"
     read -p "(1-4): " start_step
     case $start_step in
         1)
-            echo "Starting from Step 1: Installing ansible-utils collection..."
+            echo "Starting from Step 1: Installing Ansible Collections"
             step1
             step2
             step3
             step4
             ;;
         2)
-            echo "Starting from Step 2: Generating inventory..."
+            echo "Starting from Step 2: Generating inventory"
             step2
             step3
             step4
