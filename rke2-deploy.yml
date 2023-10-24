@@ -1,16 +1,16 @@
 ---
-# - name: Copy ssh-key from localhost to all hosts
-#   hosts: localhost
-#   roles:
-#     - role: ssh-copy-id
+- name: Copy ssh-key from localhost to all hosts
+  hosts: localhost
+  roles:
+    - role: ssh-copy-id
 
-# - name: Installing prerequisites on all hosts
-#   hosts: all
-#   become: true
-#   roles:
-#     - role: apt-packages
-#     - role: ntp-client
-#     - role: disable-swap
+- name: Installing prerequisites on all hosts
+  hosts: all
+  become: true
+  roles:
+    - role: apt-packages
+    - role: ntp-client
+    - role: disable-swap
 
 - name: Server play
   hosts: rke2_servers
