@@ -1,0 +1,25 @@
+---
+- name: Install NFS server and configure exports
+  hosts: nfs
+  become: true
+
+  tasks:
+    - name: Install NFS server
+      apt:
+        name: nfs-kernel-server
+        state: present
+
+    - name: Create /nfs_share directory
+      file:
+        path: /nfs_share
+        state: directory
+
+    - name: Configure NFS exports
+      lineinfile:
+        path: /etc/exports
+        line: "/nfs_share 192.168.56.0/24(rw,sync,no_subtree_check,no_root_squash)"
+
+    - name: Restart NFS server
+      service:
+        name: nfs-kernel-server
+        state: restarted
