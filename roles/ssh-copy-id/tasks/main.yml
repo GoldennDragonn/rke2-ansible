@@ -7,16 +7,11 @@
   with_items:
     - "{{ ssh_known_hosts }}"
 
-# - name: Install sshpass
-#   connection: local
-#   become: yes
-#   ansible.builtin.apt:
-#     name: sshpass
-
 - name: Install sshpass
   connection: local
   become: yes
-  command: apt-get install -y sshpass
+  ansible.builtin.apt:
+    name: sshpass
 
 - name: ssh-copy-id
   vars:
