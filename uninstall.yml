@@ -1,7 +1,12 @@
 ---
-- name: Uninstall RKE2 Cluster 
+- name: Uninstall RKE2 Cluster
   hosts: all
   become: yes
   tasks:
     - name: RUN RKE2 uninstall script
       command: /usr/local/bin/rke2-uninstall.sh
+
+    - name: Restart host
+      reboot:
+        reboot_timeout: 300
+        post_reboot_delay: 60

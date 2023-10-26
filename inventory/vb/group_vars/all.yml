@@ -1,0 +1,5 @@
+ansible_ssh_pass: "Aa123456"
+ansible_sudo_pass: "Aa123456"
+ansible_user: "ubadmin"
+
+rke_channel: 1.26
