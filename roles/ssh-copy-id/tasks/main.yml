@@ -10,6 +10,8 @@
 - name: Install sshpass
   connection: local
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.apt:
     name: sshpass
 

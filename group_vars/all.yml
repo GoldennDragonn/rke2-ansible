@@ -6,14 +6,13 @@
 # deployer_host: "{{ ansible_play_host[0]}}"
 # date: "{{lookup('pipe','date+%y_%m_%d')}}"
 
-ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 
 apt_packages:
   - name: nfs-common # for nfs-provisioner
     state: present
   - name: unattended-upgrades
     state: absent
-
 
 rke2_download_kubeconf_path: ~/.kube
 rke2_download_kubeconf_file_name: rke2.yaml
